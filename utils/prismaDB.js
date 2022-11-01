@@ -1152,11 +1152,13 @@ const getAllGencodes = async () => {
         where:{
             OR:[
                 {Warehousefrom: MAIN_WHAREHOUSE},
-                {Warehousefrom: CONSUMABLE_WAREHOUSE}
+                {Warehousefrom: CONSUMABLE_WAREHOUSE},
+                {Status:"approved"},
+                {Status:"delivered"},
             ],
-            AND:{
-                Status:"approved"
-            }
+            // AND:{
+            //     Status:"approved"
+            // }
         }
       })
 }
