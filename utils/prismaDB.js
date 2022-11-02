@@ -1406,13 +1406,14 @@ const createNewPORecord = async (record,id) => {
               WhsCode: record.WhsCode != null? record.WhsCode : undefined,
               CardName: record.CardName != null? record.CardName : undefined,
               CardCode: record.CardCode != null? record.CardCode : undefined,
-              DocNum: record.DocNum != null? parseInt(record.DocNum) : undefined,
+              DocNum: record.DocNum != null? record.DocNum : undefined,
               UgpName: record.UgpName != null? record.UgpName : undefined,
               Order: 0,
               OpenQty: record.OpenQty != null? record.OpenQty : undefined,
             }
         })
       }catch(err){
+        console.log(err)
       }
 }
 
