@@ -126,7 +126,7 @@ model receipthistory{
     WhsCode String
     CardName String
     CardCode String
-    DocNum Int
+    DocNum String
     Status String @default("received")
     UgpName String
     Order Decimal @db.Decimal(10,6)
