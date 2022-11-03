@@ -217,7 +217,12 @@ const checkMulti = (value, id) => {
   if (value % conv == 0) {
     return true;
   } else {
-    return false;
+    closeOrder = getCloseOrder(value,conv)
+    if(closeOrder == value){
+      return true
+    }else{
+      return false;
+    }
   }
 };
 
