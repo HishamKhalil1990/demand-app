@@ -617,9 +617,9 @@ const sendDeliverRec = async(rec,arr,pool,length) => {
     return new Promise((resolve,reject) => {
         let queryStatment;
         if(parseInt(rec.Order) != 0){
-            queryStatment = `update ${REQUSET_TRANSFER_TABLE} set QtyOrders = ${rec.Order} , SAP_Procces = 0 where GenCode = '${rec.GenCode}' and ItemCode = '${rec.ItemCode}'`
+            queryStatment = `update ${REQUSET_TRANSFER_TABLE} set QtyOrders = ${rec.Order} , SAP_Procces = 0 where ID = ${rec.id}`
         }else{
-            queryStatment = `delete from ${REQUSET_TRANSFER_TABLE} where GenCode = '${rec.GenCode}' and ItemCode = '${rec.ItemCode}'`
+            queryStatment = `delete from ${REQUSET_TRANSFER_TABLE} where ID = ${rec.id}`
         }
         try{
             pool.request().query(queryStatment)
