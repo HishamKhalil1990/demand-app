@@ -650,7 +650,7 @@ const sync = async (req,res) => {
                     })
                     const data = await functions.saveTransferReq(mappedData)
                     if(data){
-                        res.render('partials/reqRecTable',{info:{results:mappedData,page:"deliver"}})
+                        res.render('partials/reqRecTable',{info:{results:data,page:"deliver"}})
                     }else{
                         res.send('error')
                     }
