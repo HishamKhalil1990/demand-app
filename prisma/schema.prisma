@@ -92,7 +92,7 @@ model deliveredItemshistory {
     WhsName String
     Order Decimal @db.Decimal(10,6)
     OrderRequest Decimal @db.Decimal(10,6)
-    Status String @default("deliverd")
+    Status String @default("delivered")
     BuyUnitMsr String
     GenCode String
     createdAt DateTime @default(now())

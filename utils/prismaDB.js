@@ -563,6 +563,9 @@ const findOrderReceiptList = async() => {
                 ItemCode: 'asc',
             }
         ],
+        where:{
+            Status:"delivered",
+        }
     })
     .catch((e) => {
         console.log(e)
@@ -1138,6 +1141,9 @@ const getAllReqReceRec = async() => {
                 ItemCode: 'asc',
             }
         ],
+        where:{
+            Status:"delivered",
+        }
     })
 }
 
@@ -1150,17 +1156,20 @@ const getAllGencodes = async () => {
             }
         ],
         where:{
-            OR:[
-                {Warehousefrom: MAIN_WHAREHOUSE},
-                {Warehousefrom: CONSUMABLE_WAREHOUSE},
-                // {Status:"approved"},
-                // {Status:"delivered"},
-            ],
-            AND:{
-                Status:{
-                    not:"confirmed"
-                }
-            }
+            AND:[
+                {
+                    OR:[
+                        {Warehousefrom: MAIN_WHAREHOUSE},
+                        {Warehousefrom: CONSUMABLE_WAREHOUSE},
+                    ],
+                },
+                {
+                    OR:[
+                        {Status:"approved"},
+                        {Status:"delivered"},
+                    ],
+                },
+            ]
         }
       })
 }
@@ -1174,17 +1183,19 @@ const getAllTransferGencodes = async () => {
             }
         ],
         where:{
-            Warehousefrom: {
-                not:MAIN_WHAREHOUSE
-            },
-            AND:{
-                Warehousefrom: {
-                    not:CONSUMABLE_WAREHOUSE
-                }
-            },
-            AND:{
-                Status:"approved"
-            }
+            AND:[
+                {
+                    Warehousefrom: {
+                        not:CONSUMABLE_WAREHOUSE
+                    }
+                },
+                {
+                    Warehousefrom: {
+                        not:MAIN_WHAREHOUSE
+                    }
+                },
+                {Status:"approved"},
+            ]
         }
       })
 }
