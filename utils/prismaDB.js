@@ -1141,9 +1141,6 @@ const getAllReqReceRec = async() => {
                 ItemCode: 'asc',
             }
         ],
-        where:{
-            Status:"delivered",
-        }
     })
 }
 
