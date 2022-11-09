@@ -563,9 +563,6 @@ const findOrderReceiptList = async() => {
                 ItemCode: 'asc',
             }
         ],
-        where:{
-            Status:"delivered",
-        }
     })
     .catch((e) => {
         console.log(e)
