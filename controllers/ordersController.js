@@ -323,16 +323,24 @@ const submit = async (req,res) =>{
     try{
         let records
         let managerEmail = null
+        let count = 0
         if(page == 'request'){
             records = await prisma.findOrderList()
+            count = records.length
         }else if(page == 'transfer'){
             records = await prisma.findOrderListTransfer()
+            count = records.length
             managerEmail = req.session.managerEmail
         }else if(page == 'receipt'){
             records = await prisma.findOrderReceiptList()
+            records.forEach(rec => {
+                if(parseInt(rec.Difference) != 0){
+                    count += 1
+                }
+            })
         }
         if(records.length > 0){
-            functions.sendRequestOrder(records,req.session.username,page,note)
+            functions.sendRequestOrder(records,req.session.username,page,note,count)
             .then(() => {
                 if(req.session.allowed == '1'){
                     req.session.reload(function(err) {

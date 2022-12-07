@@ -207,7 +207,7 @@ const sendReturnItems = async (records,userName,note,genCode) => {
     })
 }
 
-const startTransaction = async (pool,rec,userName,arr,length,page,note) => {
+const startTransaction = async (pool,rec,userName,arr,length,page,note,count) => {
     const transaction = await sql.getTransaction(pool);
     return new Promise((resolve,reject) => {
         transaction.begin((err) => {
@@ -228,12 +228,12 @@ const startTransaction = async (pool,rec,userName,arr,length,page,note) => {
                 warehousefrom = rec.ListName == 'Consumable'? CONSUMABLE_WAREHOUSE : MAIN_WHAREHOUSE;
                 warehouseTo = rec.WhsCode
                 order = rec.Order
-                sapProcess = 0
+                sapProcess = 5
             }else if(page == "receipt"){
                 warehousefrom = rec.WhsCode
                 warehouseTo = rec.ListName == 'Consumable'? CONSUMABLE_WAREHOUSE : MAIN_WHAREHOUSE;
                 order = rec.Difference
-                sapProcess = 0
+                sapProcess = 5
             }
             pool.request()
             .input("ItemCode",rec.ItemCode)
@@ -256,6 +256,7 @@ const startTransaction = async (pool,rec,userName,arr,length,page,note) => {
             .input("UserName",userName)
             .input("Note",note)
             .input("SAP_Procces",sapProcess)
+            .input("CountRows",count)
             .execute(SQL_REQUEST_TRANSFER_PROCEDURE,(err,result) => {
                 if(err){
                     console.log('excute',err)
@@ -515,7 +516,7 @@ const startPOtransaction = async (pool,rec,userName,arr,length,gencode) => {
 }
 
 const checkSavedInPOtSql = async(itemCode,docNum,pool) => {
-    const queryStatment = `select * from ${RECEIVING_PO_TABLE} where ItemCode = '${itemCode}' and DocNum = ${docNum} and SAP_Processed = 0`
+    const queryStatment = `select * from ${RECEIVING_PO_TABLE} where ItemCode = '${itemCode}' and DocNum = '${docNum}' and SAP_Processed = 0`
     return new Promise((resolve,reject) => {
         pool.request().query(queryStatment)
         .then(result => {
