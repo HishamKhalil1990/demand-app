@@ -867,7 +867,7 @@ const updateTransferToHes = async (rec) => {
         },
         data : {
             Status: "confirmed",
-            Order:order
+            Order:parseFloat(rec.Order)
         }
     })
 }
