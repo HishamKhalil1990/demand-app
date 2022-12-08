@@ -115,7 +115,7 @@ const getAndSaveData = async (whs,page,value,employeeNO) => {
     } 
 }
 
-const sendRequestOrder = async (records,userName,page,note) => {
+const sendRequestOrder = async (records,userName,page,note,count) => {
     return new Promise((resolve,reject) => {
         const start = async () => {
             try{
@@ -126,7 +126,7 @@ const sendRequestOrder = async (records,userName,page,note) => {
                     records.forEach(rec => {
                         if(rec.Status == 'pending'){
                             if(page != "receipt"){
-                                startTransaction(pool,rec,userName,arr,length,page,note)
+                                startTransaction(pool,rec,userName,arr,length,page,note,count)
                                 .then(() => {
                                     resolve()
                                 })
@@ -135,7 +135,7 @@ const sendRequestOrder = async (records,userName,page,note) => {
                                 })
                             }else{
                                 if(parseInt(rec.Difference) != 0){
-                                    startTransaction(pool,rec,userName,arr,length,page,note)
+                                    startTransaction(pool,rec,userName,arr,length,page,note,count)
                                     .then(() => {
                                         resolve()
                                     })
