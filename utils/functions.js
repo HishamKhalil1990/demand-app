@@ -115,12 +115,35 @@ const getAndSaveData = async (whs,page,value,employeeNO) => {
     } 
 }
 
+const checkGenCodeSql = async(pool,genCode) => {
+    const queryStatment = `select * from ${REQUSET_TRANSFER_TABLE} where GenCode = '${genCode}'`
+    return pool.request().query(queryStatment)
+    .then(result => {
+        if(result.recordset.length > 0){
+            return true
+        }else{
+            return false
+        }
+    })
+}
+
 const sendRequestOrder = async (records,userName,page,note,count) => {
     return new Promise((resolve,reject) => {
         const start = async () => {
             try{
                 const pool = await sql.getSQL()
+                let genCodeExist
                 if(pool){
+                    if(page == 'receipt'){
+                        let gencode = 'r-' + records[0].GenCode
+                        genCodeExist = await checkGenCodeSql(pool,gencode)
+                        if(genCodeExist){
+                            records = records.map(rec => {
+                                rec.Status = 'sent'
+                                return rec
+                            })
+                        }
+                    }
                     const length = records.length
                     const arr = []
                     records.forEach(rec => {
@@ -135,6 +158,7 @@ const sendRequestOrder = async (records,userName,page,note,count) => {
                                 })
                             }else{
                                 if(parseInt(rec.Difference) != 0){
+                                    rec.GenCode = 'r-' + rec.GenCode
                                     startTransaction(pool,rec,userName,arr,length,page,note,count)
                                     .then(() => {
                                         resolve()
